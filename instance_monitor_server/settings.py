@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'contact',
     'data',
     'rest_framework',
+    'djcelery',
+    'kombu.transport.django',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -132,3 +134,16 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+import djcelery
+from datetime import timedelta
+djcelery.setup_loader()
+BROKER_URL = 'django://'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+CELERYBEAT_SCHEDULE = {
+    'check-every-30-seconds': {
+        'task': 'heartbeat.tasks.check_agent_status',
+        'schedule': timedelta(seconds=30),
+    },
+}

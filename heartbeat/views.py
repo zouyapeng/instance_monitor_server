@@ -31,10 +31,11 @@ class MonitorAgentCreateView(generics.ListCreateAPIView):
         if agent_id and uuids is not None:
             config = None
             agent = MonitorAgent.objects.get(id=agent_id)
-            if agent.status == 2:
+            if agent.update_status:
                 config = get_config(agent)
-                agent.status = 0
-                agent.save()
+                agent.update_status = False
+            agent.status = True
+            agent.save()
 
             instances_uuid = agent.instances_uuid.all()
             instances_uuid_list = [instance_uuid.uuid for instance_uuid in instances_uuid]
@@ -51,17 +52,15 @@ class MonitorAgentCreateView(generics.ListCreateAPIView):
         elif agent_id and uuids is None:
             config = None
             agent = MonitorAgent.objects.get(id=agent_id)
-            if agent.status == 2:
+            if agent.update_status:
                 config = get_config(agent)
-                agent.status = 0
+                agent.update_status = False
+            agent.status = True
             agent.update_time = datetime.datetime.now()
             agent.save()
 
-            # MonitorAgent.objects.update_or_create(id=agent_id)
-
             return Response({'id': agent_id, 'config': config})
         elif not agent_id and hostname:
-            config = None
             try:
                 agent = MonitorAgent.objects.get(hostname=hostname)
             except MonitorAgent.DoesNotExist:
@@ -82,7 +81,8 @@ class MonitorAgentCreateView(generics.ListCreateAPIView):
                         instance_uuid.save()
 
             config = get_config(agent)
-            agent.status = 0
+            agent.update_status = False
+            agent.status = True
             agent.save()
 
             return Response({'id': agent.id, 'config': config})

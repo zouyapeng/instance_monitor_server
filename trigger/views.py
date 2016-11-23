@@ -1,10 +1,10 @@
 
 from trigger.models import Trigger
+from heartbeat.models import InstanceUUID
 from trigger.serializers import TriggerSerializer
 from rest_framework import generics
-from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-import pprint
+from django.conf import settings
 
 
 class TriggerListCreateView(generics.ListCreateAPIView):
@@ -13,11 +13,16 @@ class TriggerListCreateView(generics.ListCreateAPIView):
 
     def get(self, request, *args, **kwargs):
         triggers = super(TriggerListCreateView, self).get(request, args, kwargs)
-
         return triggers
 
     def post(self, request, *args, **kwargs):
-        print self.get_serializer(data=request.data)
+        instance_uuid = request.data.get('instance_uuid')
+        try:
+            uuid = InstanceUUID.objects.get(uuid=instance_uuid)
+            request.data['instance_uuid'] = uuid.id
+        except InstanceUUID.DoesNotExist:
+            pass
+
         return super(TriggerListCreateView, self).post(request, args, kwargs)
 
 
@@ -26,10 +31,6 @@ class TriggerRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TriggerSerializer
 
     def put(self, request, *args, **kwargs):
-        trigger = self.get_object()
-        agent = trigger.instance_uuid.agent
-        agent.status = 2
-        agent.save()
         return super(TriggerRetrieveUpdateDestroyView, self).put(request, args, kwargs)
 
 

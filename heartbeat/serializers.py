@@ -5,5 +5,5 @@ from rest_framework import serializers
 class MonitorAgentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = MonitorAgent
-        fields = ('id', 'hostname', 'register_time', 'update_time', 'uuids', 'status')
+        fields = ('id', 'hostname', 'register_time', 'update_time', 'uuids')
 

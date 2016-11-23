@@ -4,16 +4,11 @@ from django.db import models
 
 
 class MonitorAgent(models.Model):
-    MONITOR_AGENT_STATUS = (
-        (0, 'Active'),
-        (1, 'Inactive'),
-        (2, 'Update'),
-    )
-
     hostname = models.GenericIPAddressField()
     register_time = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     update_time = models.DateTimeField(auto_now=True, blank=True, null=True)
-    status = models.IntegerField(choices=MONITOR_AGENT_STATUS)
+    status = models.BooleanField(default=True)
+    update_status = models.BooleanField(default=False)
 
     @property
     def uuids(self):

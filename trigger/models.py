@@ -32,7 +32,6 @@ class Trigger(models.Model):
 
     name = models.CharField(max_length=128)
     instance_uuid = models.ForeignKey(InstanceUUID, related_name='trigger')
-    # instance_uuid = models.CharField(max_length=128)
     item = models.CharField(max_length=32, choices=ITEM)
     period = models.IntegerField()
     method = models.CharField(max_length=3, choices=METHOD, default='avg')
@@ -63,6 +62,17 @@ class Trigger(models.Model):
         message = ' '.join([self.item, self.period, self.method, self.method_option, self.threshold])
         return [{'instance': self.instance_uuid, 'message': message, 'create_time': event.create_time}
                 for event in self.events.all() if event.create_time >= datetime]
+
+    def delete(self, using=None, keep_parents=False):
+        super(Trigger, self).delete(using)
+        self.instance_uuid.agent.update_status = True
+        self.instance_uuid.agent.save()
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        super(Trigger, self).save(force_insert, force_update, using, update_fields)
+        self.instance_uuid.agent.update_status = True
+        self.instance_uuid.agent.save()
 
     @property
     def contact_list(self):

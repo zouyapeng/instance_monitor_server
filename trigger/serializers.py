@@ -2,7 +2,7 @@ from trigger.models import Trigger, Event
 from rest_framework import serializers
 
 
-class TriggerSerializer(serializers.HyperlinkedModelSerializer):
+class TriggerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trigger
