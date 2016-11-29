@@ -26,13 +26,15 @@ class Trigger(models.Model):
         ('>=', '>='),
         ('<', '<'),
         ('<=', '<='),
-        ('=', '='),
+        ('==', '=='),
         ('!=', '!=')
     })
 
     name = models.CharField(max_length=128)
-    instance_uuid = models.ForeignKey(InstanceUUID, related_name='trigger')
+    instance_uuid = models.CharField(max_length=128)
+    # instance_uuid = models.ForeignKey(InstanceUUID, related_name='trigger')
     item = models.CharField(max_length=32, choices=ITEM)
+    item_option = models.CharField(max_length=16, blank=True, null=True)
     period = models.IntegerField()
     method = models.CharField(max_length=3, choices=METHOD, default='avg')
     method_option = models.CharField(max_length=2, choices=METHOD_OPTION, default='>=')
@@ -42,16 +44,25 @@ class Trigger(models.Model):
 
     def format_dict(self):
         return {'id': self.id,
+                'name': self.name,
+                'instance_uuid': self.instance_uuid,
                 'item': self.item,
+                'item_option': self.item_option,
                 'period': self.period,
                 'method': self.method,
                 'method_option': self.method_option,
-                'threshold': self.threshold}
+                'threshold': self.threshold,
+                'contacts': self.contact_ids,
+                'status': self.status}
 
-    def get_problem_events(self):
-        message = ' '.join([self.item, self.period, self.method, self.method_option, self.threshold])
-        return [{'instance':self.instance_uuid, 'message': message, 'create_time': event.create_time}
-                for event in self.events.all() if event.status is True]
+    def get_events(self):
+        message = ' '.join(str(val) for val in [self.item, self.period, 'minutes', self.method, self.method_option, self.threshold])
+        return [{'instance': self.instance_uuid,
+                 'message': message,
+                 'create_time': event.create_time,
+                 'end_time': event.end_time,
+                 'status': event.status}
+                for event in self.events.all()]
 
     def get_last_problem_events(self, datetime):
         message = ' '.join([self.item, self.period, self.method, self.method_option, self.threshold])
@@ -65,14 +76,20 @@ class Trigger(models.Model):
 
     def delete(self, using=None, keep_parents=False):
         super(Trigger, self).delete(using)
-        self.instance_uuid.agent.update_status = True
-        self.instance_uuid.agent.save()
+        instance_uuid = InstanceUUID.objects.get(uuid=self.instance_uuid)
+        instance_uuid.agent.update_status = True
+        instance_uuid.agent.save()
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         super(Trigger, self).save(force_insert, force_update, using, update_fields)
-        self.instance_uuid.agent.update_status = True
-        self.instance_uuid.agent.save()
+        instance_uuid = InstanceUUID.objects.get(uuid=self.instance_uuid)
+        instance_uuid.agent.update_status = True
+        instance_uuid.agent.save()
+
+    @property
+    def contact_ids(self):
+        return [contact.id for contact in self.contacts.all()]
 
     @property
     def contact_list(self):
@@ -96,5 +113,8 @@ class Event(models.Model):
     status = models.BooleanField(choices=EVENT_STATUS)
     create_time = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
+
+    def __unicode__(self):
+        return "{} - {} - {}".format(self.create_time, self.trigger.name, self.status)
 
 

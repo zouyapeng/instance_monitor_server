@@ -14,7 +14,7 @@ def get_config(agent):
 
     config = {}
     for uuid in uuids:
-        config[uuid.uuid] = [trigger.format_dict() for trigger in uuid.trigger.all()]
+        config[uuid.uuid] = [trigger.format_dict() for trigger in Trigger.objects.filter(instance_uuid=uuid.uuid)]
 
     return config
 
