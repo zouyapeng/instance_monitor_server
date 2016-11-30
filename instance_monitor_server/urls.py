@@ -19,6 +19,7 @@ from contact.views import ContactViewSet
 from trigger.views import TriggerListCreateView, TriggerRetrieveUpdateDestroyView, EventListView
 from heartbeat.views import MonitorAgentCreateView
 from heartbeat.views import InstanceUUIDRetrieveView
+from data.views import DataListView
 
 contact_list = ContactViewSet.as_view({
     'get': 'list',
@@ -48,6 +49,8 @@ urlpatterns = [
     url(r'^trigger/(?P<pk>[0-9]+)/$', TriggerRetrieveUpdateDestroyView.as_view(), name='trigger-detail'),
 
     url(r'^event/$', EventListView.as_view(), name='event-list'),
+
+    url(r'^data/$', DataListView.as_view(), name='data-list'),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

@@ -13,22 +13,23 @@ def send_sms(event):
                                             trigger.method_option, trigger.threshold])
 
     time = event.create_time
-    print tel_list
-    print message
+    print(tel_list)
+    print(message)
 
 
 @task()
 def send_email(event):
     trigger = event.trigger
     email_list = [contact['email'] for contact in trigger.contact_list if contact['email_status']]
-    message = ' '.join(str(val) for val in [trigger.item, trigger.period, 'minutes', trigger.method,
+    subject = ' '.join(str(val) for val in [trigger.item, trigger.period, 'minutes', trigger.method,
                                             trigger.method_option, trigger.threshold])
 
+    message = ''
     # time = event.create_time
 
     me = 'monitor@newtouch.com'
     msg = MIMEText(message, _subtype='plain', _charset='utf-8')
-    msg['Subject'] = "test"
+    msg['Subject'] = subject
     msg['From'] = me
     msg['To'] = ";".join(email_list)
     try:
@@ -37,5 +38,5 @@ def send_email(event):
         server.login("monitor@newtouch.com", "newtouchmonitor")
         server.sendmail(me, email_list, msg.as_string())
         server.close()
-    except Exception as e:
+    except Exception as error:
         pass
