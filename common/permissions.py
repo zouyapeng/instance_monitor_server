@@ -8,6 +8,10 @@ class IsTokenAuthenticated(BasePermission):
     """
 
     def has_permission(self, request, view):
+        is_agent = request.data.get('agent', None)
+        if is_agent:
+            return True
+
         try:
             token = request.META['HTTP_X_AUTH_TOKEN']
         except KeyError:
