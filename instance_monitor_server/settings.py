@@ -110,9 +110,15 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'common.permissions.IsTokenAuthenticated'
-    ]
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'common.permissions.IsTokenAuthenticated',
+    )
 }
 
 
@@ -134,6 +140,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+OPENSTACK_AUTH_URL='http://172.23.4.1:5000/v2.0/'
 
 import djcelery
 from datetime import timedelta
