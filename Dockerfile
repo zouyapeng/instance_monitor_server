@@ -15,9 +15,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install mysqlclient psycopg2 django=="$DJANGO_VERSION" uwsgi pymongo==3.4.0
 
-ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /
-#RUN unzip /instance_monitor_server-master.zip
+ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /home/
+RUN unzip /home/master.zip /home
 
-#WORKDIR /instance_monitor_server
-
-
+WORKDIR /home/instance_monitor_server
