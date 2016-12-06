@@ -22,6 +22,6 @@ RUN unzip /home/master.zip -d /home
 
 WORKDIR /home/instance_monitor_server
 
-ENTRYPOINT ["uwsgi"]
+#ENTRYPOINT ["uwsgi"]
 
-CMD ["--ini", "uwsgi.ini"]
+#CMD ["--ini", "uwsgi.ini"]
