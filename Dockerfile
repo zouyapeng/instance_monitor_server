@@ -20,8 +20,8 @@ RUN pip install mysqlclient psycopg2 django=="$DJANGO_VERSION" uwsgi pymongo==3.
 ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /home/
 RUN unzip /home/master.zip -d /home
 
-WORKDIR /home/instance_monitor_server
+WORKDIR /home/instance_monitor_server-master
 
-#ENTRYPOINT ["uwsgi"]
+ENTRYPOINT ["uwsgi"]
 
-#CMD ["--ini", "uwsgi.ini"]
+CMD ["--ini", "uwsgi.ini"]
