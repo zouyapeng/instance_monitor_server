@@ -1,9 +1,9 @@
 FROM ubuntu:14.04
 MAINTAINER Zouyapeng<zyp19901009@163.com>
 
-ENV DJANGO_VERSION 1.8.4 \
-        SERVER_LISTEN 0.0.0.0 \
-        SERVER_PORT 9339
+ENV \
+    DJANGO_VERSION=1.8.4 \
+    LISTEN_PORT=9338
 
 RUN apt-get update && apt-get install -y \
 		gcc \
@@ -22,6 +22,6 @@ RUN unzip /home/master.zip -d /home
 
 WORKDIR /home/instance_monitor_server
 
-ENTRYPOINT ["python"]
+ENTRYPOINT ["uwsgi"]
 
-CMD ["manage.py", "runserver", "$SERVER_LISTEN:$SERVER_PORT"]
+CMD ["--ini", "uwsgi.ini"]
