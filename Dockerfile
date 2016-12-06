@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
 		gettext \
 		mysql-client libmysqlclient-dev \
 		postgresql-client libpq-dev \
+		sqlite3 \
 		python-pip \
 		unzip \
 		python-dev \
