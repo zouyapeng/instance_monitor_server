@@ -20,4 +20,4 @@ RUN unzip /home/master.zip -d /home
 
 RUN pip install -r /home/instance_monitor_server-master/requestments.txt
 
-ENTRYPOINT ["/usr/local/bin/uwsgi", "/home/instance_monitor_server-master/uwsgi.ini"]
+CMD ["/usr/local/bin/uwsgi", "/home/instance_monitor_server-master/uwsgi.ini"]
