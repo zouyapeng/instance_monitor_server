@@ -1,6 +1,9 @@
 # Pycharm Project files
 .idea/
 
+# Django
+migrations/
+
 # sqlite3 db files
 *.sqlite3
 

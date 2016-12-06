@@ -13,15 +13,21 @@ RUN apt-get update && apt-get install -y \
 		python-pip \
 		unzip \
 		python-dev \
+		nginx \
+		supervisor \
 	--no-install-recommends && rm -rf /var/lib/apt/lists/*
-
-RUN pip install mysqlclient psycopg2 django=="$DJANGO_VERSION" uwsgi pymongo==3.4.0
 
 ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /home/
 RUN unzip /home/master.zip -d /home
 
-WORKDIR /home/instance_monitor_server-master
+RUN pip install -r /home/instance_monitor_server-master/requestments.txt
 
-ENTRYPOINT ["uwsgi"]
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf && \
+        cp /home/instance_monitor_server-master/VMServer.conf /etc/nginx/conf.d/ && \
+        cp /home/instance_monitor_server-master/supervisor-app.conf /etc/supervisor/conf.d/
 
-CMD ["--ini", "uwsgi.ini"]
+EXPOSE 9339
+
+ENTRYPOINT ["supervisord"]
+
+CMD ["-n"]
