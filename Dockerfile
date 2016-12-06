@@ -1,7 +1,9 @@
 FROM ubuntu:14.04
 MAINTAINER Zouyapeng<zyp19901009@163.com>
 
-ENV DJANGO_VERSION 1.8.4
+ENV DJANGO_VERSION 1.8.4 \
+        SERVER_LISTEN 0.0.0.0 \
+        SERVER_PORT 9339
 
 RUN apt-get update && apt-get install -y \
 		gcc \
@@ -16,6 +18,10 @@ RUN apt-get update && apt-get install -y \
 RUN pip install mysqlclient psycopg2 django=="$DJANGO_VERSION" uwsgi pymongo==3.4.0
 
 ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /home/
-RUN unzip /home/master.zip /home
+RUN unzip /home/master.zip -d /home
 
 WORKDIR /home/instance_monitor_server
+
+ENTRYPOINT ["python"]
+
+CMD ["manage.py", "runserver", "$SERVER_LISTEN:$SERVER_PORT"]
