@@ -33,4 +33,4 @@ RUN sed -i "s/127.0.0.1/$OPENSTACK_AUTH_URL/g" /home/instance_monitor_server-mas
     && sed -i "s/'USER':.*,/'USER': '$DB_USER',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py \
     && sed -i "s/'PASSWORD':.*,/'PASSWORD': '$DB_PASSWORD',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
 
-ENTRYPOINT ["/bin/sleep", "30s", "&&","supervisord", "-n"]
+ENTRYPOINT ["/home/instance_monitor_server-master/run.sh"]
