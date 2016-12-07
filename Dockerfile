@@ -25,14 +25,12 @@ RUN apt-get update && apt-get install -y \
 COPY supervisor-app.conf /etc/supervisor/conf.d/
 
 ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /home/
-RUN unzip /home/master.zip -d /home
+RUN unzip /home/master.zip -d /home \
+    && pip install -r /home/instance_monitor_server-master/requestments.txt
 
-RUN pip install -r /home/instance_monitor_server-master/requestments.txt
-RUN sed -i "s/127.0.0.1/$OPENSTACK_AUTH_URL/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
-RUN sed -i "s/'NAME':.*,/'NAME': 'DB_HOSTNAME',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
-RUN sed -i "s/'USER':.*,/'USER': '$DB_USER',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
-RUN sed -i "s/'PASSWORD':.*,/'PASSWORD': 'DB_PASSWORD',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
+RUN sed -i "s/127.0.0.1/$OPENSTACK_AUTH_URL/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py \
+    && sed -i "s/'NAME':.*,/'NAME': '$DB_HOSTNAME',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py \
+    && sed -i "s/'USER':.*,/'USER': '$DB_USER',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py \
+    && sed -i "s/'PASSWORD':.*,/'PASSWORD': '$DB_PASSWORD',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
 
-
-#CMD ["/usr/local/bin/uwsgi", "/home/instance_monitor_server-master/uwsgi.ini"]
-CMD ["supervisord", "-n"]
+ENTRYPOINT ["supervisord", "-n"]
