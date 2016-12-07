@@ -1,0 +1,27 @@
+vmserver-db:
+  image: mysql:5.6
+  container_name: vmserver-db
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/volumes/mysql/backups:/backups
+    - /opt/volumes/mysql/mysql:/var/lib/mysql
+  environment:
+    - MYSQL_DATABASE=vmserver
+    - MYSQL_USER=vmserver
+    - MYSQL_PASSWORD=vmserver
+
+vmserver:
+  image: zouyapeng/vmserver
+  container_name: vmserver
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/volumes/vmserver/settings:/home/instance_monitor_server-master/instance_monitor_server/settings.py
+  links:
+    - vmserver-db:vmserverdb
+  ports:
+    - "9338:9338"
+  environment:
+    - OPENSTACK_AUTH_URL=172.23.4.1
+    - DB_NAME = vmserver
+    - DB_USER = vmserver
+    - DB_PASSWORD = vmserver
