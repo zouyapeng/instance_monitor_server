@@ -3,9 +3,9 @@ MAINTAINER Zouyapeng<zyp19901009@163.com>
 
 ENV \
     OPENSTACK_AUTH_URL=172.23.4.1 \
-    DB_HOSTNAME = vmserverdb \
-    DB_USER = vmserver \
-    DB_PASSWORD = vmserver
+    DB_HOSTNAME=vmserverdb \
+    DB_USER=vmserver \
+    DB_PASSWORD=vmserver
 
 RUN apt-get update && apt-get install -y \
 		gcc \
