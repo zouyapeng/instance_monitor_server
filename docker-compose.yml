@@ -16,7 +16,7 @@ vmserver:
   container_name: vmserver
   volumes:
     - /etc/localtime:/etc/localtime:ro
-    - /opt/volumes/vmserver/settings:/home/instance_monitor_server-master/instance_monitor_server/settings.py
+    - /opt/volumes/vmserver:/home/instance_monitor_server-master/instance_monitor_server
   links:
     - vmserver-db:vmserverdb
   ports:
