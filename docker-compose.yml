@@ -6,6 +6,7 @@ vmserver-db:
     - /opt/volumes/mysql/backups:/backups
     - /opt/volumes/mysql/mysql:/var/lib/mysql
   environment:
+    - MYSQL_ROOT_PASSWORD=123456
     - MYSQL_DATABASE=vmserver
     - MYSQL_USER=vmserver
     - MYSQL_PASSWORD=vmserver
