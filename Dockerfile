@@ -29,9 +29,9 @@ RUN unzip /home/master.zip -d /home
 
 RUN pip install -r /home/instance_monitor_server-master/requestments.txt
 RUN sed -i "s/127.0.0.1/$OPENSTACK_AUTH_URL/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
-RUN sed -i "s/'NAME':.*,/'NAME': 'DB_HOSTNAME',/g" settings.py
-RUN sed -i "s/'USER':.*,/'USER': '$DB_USER',/g" settings.py
-RUN sed -i "s/'PASSWORD':.*,/'PASSWORD': 'DB_PASSWORD',/g" settings.py
+RUN sed -i "s/'NAME':.*,/'NAME': 'DB_HOSTNAME',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
+RUN sed -i "s/'USER':.*,/'USER': '$DB_USER',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
+RUN sed -i "s/'PASSWORD':.*,/'PASSWORD': 'DB_PASSWORD',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
 
 
 #CMD ["/usr/local/bin/uwsgi", "/home/instance_monitor_server-master/uwsgi.ini"]
