@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
 		python-dev \
 		supervisor \
 		python-mysqldb \
+		nginx \
 	--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& rm -fr /tmp/* \
@@ -30,6 +31,8 @@ COPY supervisor-app.conf /etc/supervisor/conf.d/
 
 ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /home/
 RUN unzip /home/master.zip -d /home \
-    && pip install -r /home/instance_monitor_server-master/requestments.txt
+    && pip install -r /home/instance_monitor_server-master/requestments.txt \
+    && cp /home/instance_monitor_server-master/vmserver.conf /etc/nginx/sites-available/default \
+    && echo "daemon off;" >> /etc/nginx/nginx.conf
 
 ENTRYPOINT ["/home/instance_monitor_server-master/run.sh"]
