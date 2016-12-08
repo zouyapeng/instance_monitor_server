@@ -42,10 +42,10 @@ vmserver:
 
 nginx:
   image: zouyapeng/nginx:9339
+  container_name: nginx
   ports:
     - "9339:9339"
   links:
     - vmserver:vmserver
   environment:
     - VMSERVER=vmserver
-  command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
