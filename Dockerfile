@@ -2,8 +2,8 @@ FROM ubuntu:14.04
 MAINTAINER Zouyapeng<zyp19901009@163.com>
 
 ENV \
-    OPENSTACK_AUTH_URL=172.23.4.1 \
-    DB_HOSTNAME=vmserverdb \
+    OPENSTACK_AUTH_URL=127.0.0.1 \
+    DB_NAME=vmserver \
     DB_USER=vmserver \
     DB_PASSWORD=vmserver
 
@@ -28,10 +28,5 @@ COPY supervisor-app.conf /etc/supervisor/conf.d/
 ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /home/
 RUN unzip /home/master.zip -d /home \
     && pip install -r /home/instance_monitor_server-master/requestments.txt
-
-RUN sed -i "s/127.0.0.1/$OPENSTACK_AUTH_URL/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py \
-    && sed -i "s/'NAME':.*,/'NAME': '$DB_HOSTNAME',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py \
-    && sed -i "s/'USER':.*,/'USER': '$DB_USER',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py \
-    && sed -i "s/'PASSWORD':.*,/'PASSWORD': '$DB_PASSWORD',/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
 
 ENTRYPOINT ["/home/instance_monitor_server-master/run.sh"]

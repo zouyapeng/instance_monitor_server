@@ -21,7 +21,7 @@ vmserver:
   ports:
     - "9338:9338"
   environment:
-    - OPENSTACK_AUTH_URL=172.23.4.1
-    - DB_NAME = vmserver
-    - DB_USER = vmserver
-    - DB_PASSWORD = vmserver
+    - OPENSTACK_AUTH_URL=192.168.213.220
+    - DB_NAME=vmserver
+    - DB_USER=vmserver
+    - DB_PASSWORD=vmserver
