@@ -3,6 +3,7 @@ MAINTAINER Zouyapeng<zyp19901009@163.com>
 
 ENV \
     OPENSTACK_AUTH_URL=127.0.0.1 \
+    C_FORCE_ROOT=true \
     DB_NAME=vmserver \
     DB_USER=vmserver \
     DB_PASSWORD=vmserver \
@@ -33,9 +34,6 @@ ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /hom
 RUN unzip /home/master.zip -d /home \
     && pip install -r /home/instance_monitor_server-master/requestments.txt \
     && cp /home/instance_monitor_server-master/vmserver.conf /etc/nginx/sites-available/default \
-    && echo "daemon off;" >> /etc/nginx/nginx.conf \
-    && chown www-data:www-data /home/instance_monitor_server-master -R
-
-USER www-data
+    && echo "daemon off;" >> /etc/nginx/nginx.conf
 
 ENTRYPOINT ["/home/instance_monitor_server-master/run.sh"]
