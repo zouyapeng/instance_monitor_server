@@ -5,7 +5,10 @@ ENV \
     OPENSTACK_AUTH_URL=127.0.0.1 \
     DB_NAME=vmserver \
     DB_USER=vmserver \
-    DB_PASSWORD=vmserver
+    DB_PASSWORD=vmserver \
+    MONGODB_HOST=192.168.213.230 \
+    MONGODB_PORT=27017 \
+    MONGODB_EXPIRE=2592000
 
 RUN apt-get update && apt-get install -y \
 		gcc \

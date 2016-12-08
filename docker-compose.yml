@@ -11,6 +11,18 @@ vmserver-db:
     - MYSQL_USER=vmserver
     - MYSQL_PASSWORD=vmserver
 
+vmserver-mongodb:
+  image: tutum/mongodb:3.2
+  container_name: vmserver-mongodb
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/volumes/mongodb/data:/data/db
+  ports:
+    - "27017:27017"
+    - "28017:28017"
+  environment:
+    - AUTH=no
+
 vmserver:
   image: zouyapeng/vmserver
   container_name: vmserver
@@ -18,10 +30,22 @@ vmserver:
     - /etc/localtime:/etc/localtime:ro
   links:
     - vmserver-db:vmserverdb
-  ports:
-    - "9338:9338"
   environment:
     - OPENSTACK_AUTH_URL=192.168.213.220
     - DB_NAME=vmserver
     - DB_USER=vmserver
     - DB_PASSWORD=vmserver
+    - MONGODB_HOST=192.168.213.230
+    - MONGODB_PORT=27017
+    - MONGODB_EXPIRE=2592000
+
+
+nginx:
+  image: zouyapeng/nginx:9339
+  ports:
+    - "9339:9339"
+  links:
+    - vmserver:vmserver
+  environment:
+    - VMSERVER=vmserver
+  command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"

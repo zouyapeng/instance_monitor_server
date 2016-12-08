@@ -145,6 +145,9 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 OPENSTACK_AUTH_URL='http://127.0.0.1:5000/v2.0/'
+MONGODB_HOST = '192.168.213.230'
+MONGODB_PORT = 27017
+MONGODB_EXPIRE = 30 * 24 * 60 * 60
 
 import djcelery
 from datetime import timedelta
