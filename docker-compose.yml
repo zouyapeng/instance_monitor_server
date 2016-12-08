@@ -28,27 +28,15 @@ vmserver:
   container_name: vmserver
   volumes:
     - /etc/localtime:/etc/localtime:ro
+  ports:
+    - "9339:9339"
   links:
     - vmserver-db:vmserverdb
   environment:
     - OPENSTACK_AUTH_URL=192.168.213.220
-    - C_FORCE_ROOT=true
     - DB_NAME=vmserver
     - DB_USER=vmserver
     - DB_PASSWORD=vmserver
-    - MONGODB_HOST=192.168.213.230
+    - MONGODB_HOST=192.168.205.32
     - MONGODB_PORT=27017
     - MONGODB_EXPIRE=2592000
-
-nginx:
-  image: zouyapeng/nginx:9339
-  container_name: nginx
-  volumes:
-    - ./nginx/vmserver.template:/etc/nginx/conf.d/vmserver.template
-  ports:
-    - "9339:9339"
-  links:
-    - vmserver:vmserver
-  environment:
-    - VMSERVER=vmserver
-  command: /bin/bash -c "envsubst < /etc/nginx/conf.d/vmserver.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"

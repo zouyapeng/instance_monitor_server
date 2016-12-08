@@ -6,7 +6,7 @@ ENV \
     DB_NAME=vmserver \
     DB_USER=vmserver \
     DB_PASSWORD=vmserver \
-    MONGODB_HOST=192.168.213.230 \
+    MONGODB_HOST=127.0.0.1 \
     MONGODB_PORT=27017 \
     MONGODB_EXPIRE=2592000
 
@@ -33,6 +33,9 @@ ADD https://github.com/zouyapeng/instance_monitor_server/archive/master.zip /hom
 RUN unzip /home/master.zip -d /home \
     && pip install -r /home/instance_monitor_server-master/requestments.txt \
     && cp /home/instance_monitor_server-master/vmserver.conf /etc/nginx/sites-available/default \
-    && echo "daemon off;" >> /etc/nginx/nginx.conf
+    && echo "daemon off;" >> /etc/nginx/nginx.conf \
+    && chown www-data:www-data /home/instance_monitor_server-master -R
+
+USER www-data
 
 ENTRYPOINT ["/home/instance_monitor_server-master/run.sh"]
