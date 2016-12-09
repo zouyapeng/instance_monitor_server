@@ -13,7 +13,7 @@ class IsTokenAuthenticated(BasePermission):
             return True
 
         try:
-            token = request.META['HTTP_X_AUTH_TOKEN']
+            token = request.META['HTTP_TOKEN']
         except KeyError:
             return False
         if authenticate_token(token) != 200:
