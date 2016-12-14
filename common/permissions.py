@@ -1,5 +1,6 @@
 from rest_framework.permissions import BasePermission
 from common.openstack import authenticate_token
+from django.conf import settings
 
 
 class IsTokenAuthenticated(BasePermission):
@@ -8,6 +9,9 @@ class IsTokenAuthenticated(BasePermission):
     """
 
     def has_permission(self, request, view):
+        if settings.DEBUG:
+            return True
+
         is_agent = request.data.get('agent', None)
         if is_agent:
             return True

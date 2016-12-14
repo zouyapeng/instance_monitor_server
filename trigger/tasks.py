@@ -5,10 +5,15 @@ import smtplib
 from email.mime.text import MIMEText
 import datetime
 
+
 @task()
 def send_sms(event):
     trigger = event.trigger
     tel_list = [contact['tel'] for contact in trigger.contact_list if contact['tel_status']]
+
+    if not tel_list:
+        return
+
     message = ' '.join(str(val) for val in [trigger.item, trigger.period, 'minutes', trigger.method,
                                             trigger.method_option, trigger.threshold])
 
@@ -21,6 +26,10 @@ def send_sms(event):
 def send_email(event):
     trigger = event.trigger
     email_list = [contact['email'] for contact in trigger.contact_list if contact['email_status']]
+
+    if not email_list:
+        return
+
     subject = ' '.join(str(val) for val in [trigger.item, trigger.period, 'minutes', trigger.method,
                                             trigger.method_option, trigger.threshold])
 

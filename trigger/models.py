@@ -30,16 +30,16 @@ class Trigger(models.Model):
         ('!=', '!=')
     })
 
+    step_user = models.CharField(max_length=128)
     name = models.CharField(max_length=128)
     instance_uuid = models.CharField(max_length=128)
-    # instance_uuid = models.ForeignKey(InstanceUUID, related_name='trigger')
     item = models.CharField(max_length=32, choices=ITEM)
     item_option = models.CharField(max_length=16, blank=True, null=True)
     period = models.IntegerField()
     method = models.CharField(max_length=3, choices=METHOD, default='avg')
     method_option = models.CharField(max_length=2, choices=METHOD_OPTION, default='>=')
     threshold = models.IntegerField()
-    contacts = models.ManyToManyField(Contact, related_name='trigger')
+    contacts = models.ManyToManyField(Contact, blank=True, related_name='trigger')
     status = models.BooleanField(default=False)
 
     def format_dict(self):

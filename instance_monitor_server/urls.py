@@ -15,23 +15,23 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from contact.views import ContactViewSet
-from trigger.views import TriggerListCreateView, TriggerRetrieveUpdateDestroyView, EventListView
+# from contact.views import ContactViewSet
+from trigger.views import TriggerListView, TriggerCreateView, TriggerRetrieveUpdateDestroyView, EventListView
 from heartbeat.views import MonitorAgentCreateView
 from heartbeat.views import InstanceUUIDRetrieveView
 from data.views import DataListView
+from contact.views import ContactListView, ContactCreateView, ContactRetrieveUpdateDestroyView
 
-contact_list = ContactViewSet.as_view({
-    'get': 'list',
-    'post': 'create'
-})
-
-contact_detail = ContactViewSet.as_view({
-    'get': 'retrieve',
-    'put': 'update',
-    'delete': 'destroy'
-})
-
+# contact_list = ContactViewSet.as_view({
+#     'get': 'list',
+#     'post': 'create'
+# })
+#
+# contact_detail = ContactViewSet.as_view({
+#     'get': 'retrieve',
+#     'put': 'update',
+#     'delete': 'destroy'
+# })
 
 
 urlpatterns = [
@@ -41,12 +41,13 @@ urlpatterns = [
 
     url(r'^uuid/(?P<pk>[0-9]+)/$', InstanceUUIDRetrieveView.as_view(), name='instanceuuid-detail'),
 
+    url(r'^contact/$', ContactListView.as_view(), name='contact-list'),
+    url(r'^contact/(?P<pk>[0-9]+)/$', ContactRetrieveUpdateDestroyView.as_view(), name='contact-detail'),
+    url(r'^contact-create/$', ContactCreateView.as_view(), name='contact-create'),
 
-    url(r'^contact/$', contact_list, name='contact-list'),
-    url(r'^contact/(?P<pk>[0-9]+)/$', contact_detail, name='contact-detail'),
-
-    url(r'^trigger/$', TriggerListCreateView.as_view(), name='trigger-list'),
+    url(r'^trigger/$', TriggerListView.as_view(), name='trigger-list'),
     url(r'^trigger/(?P<pk>[0-9]+)/$', TriggerRetrieveUpdateDestroyView.as_view(), name='trigger-detail'),
+    url(r'^trigger-create/$', TriggerCreateView.as_view(), name='trigger-create'),
 
     url(r'^event/$', EventListView.as_view(), name='event-list'),
 

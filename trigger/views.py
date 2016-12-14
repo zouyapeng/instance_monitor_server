@@ -1,6 +1,5 @@
 
 from trigger.models import Trigger, Event
-from heartbeat.models import InstanceUUID
 from trigger.serializers import TriggerSerializer, EventSerializer
 from trigger.tasks import send_email, send_sms
 from rest_framework import generics
@@ -10,16 +9,24 @@ from django.conf import settings
 import datetime
 
 
-class TriggerListCreateView(generics.ListCreateAPIView):
+class TriggerListView(generics.CreateAPIView):
     queryset = Trigger.objects.all()
     serializer_class = TriggerSerializer
 
-    def get(self, request, *args, **kwargs):
-        triggers = super(TriggerListCreateView, self).get(request, args, kwargs)
-        return triggers
-
     def post(self, request, *args, **kwargs):
-        return super(TriggerListCreateView, self).post(request, args, kwargs)
+        step_user = request.data.get('step_user', None)
+        if step_user is None:
+            return Response(data={'messages': 'step_user is need for get contact list.'}, status=400)
+
+        queryset = Trigger.objects.filter(step_user=step_user)
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+
+class TriggerCreateView(generics.ListCreateAPIView):
+    queryset = Trigger.objects.all()
+    serializer_class = TriggerSerializer
 
 
 class TriggerRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):

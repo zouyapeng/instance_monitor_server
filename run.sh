@@ -8,5 +8,5 @@ sed -i "s/MONGODB_HOST=.*/MONGODB_HOST='$MONGODB_HOST'/g" /home/instance_monitor
 sed -i "s/MONGODB_PORT=.*/MONGODB_PORT=$MONGODB_PORT/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
 sed -i "s/MONGODB_EXPIRE=.*/MONGODB_EXPIRE=$MONGODB_EXPIRE/g" /home/instance_monitor_server-master/instance_monitor_server/settings.py
 
-sleep 30s;
+sleep 20s;
 supervisord -n
