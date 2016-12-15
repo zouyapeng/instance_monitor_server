@@ -227,6 +227,7 @@ def mongodb_get_data(uuid, start, end, item=None):
         start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
     if end:
         end = datetime.datetime.strptime(end, '%Y-%m-%d %H:%M:%S')
+
     uuid = uuid.strip()
 
     if item == 'cpu usage':
