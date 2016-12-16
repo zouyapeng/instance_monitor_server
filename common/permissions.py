@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 from rest_framework.permissions import BasePermission
 from common.openstack import authenticate_token
 from django.conf import settings

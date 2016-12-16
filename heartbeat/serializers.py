@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 from heartbeat.models import MonitorAgent
 from rest_framework import serializers
 

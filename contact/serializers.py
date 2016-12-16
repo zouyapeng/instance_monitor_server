@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 from contact.models import Contact
 from rest_framework import serializers
 

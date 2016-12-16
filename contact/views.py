@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 from contact.models import Contact
 from contact.serializers import ContactSerializer
 from rest_framework import generics
@@ -11,7 +13,7 @@ class ContactListView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         step_user = request.data.get('step_user', None)
         if step_user is None:
-            return Response(data={'messages': 'step_user is need for get contact list.'}, status=400)
+            return Response(data={'detail': 'step_user is need for get contact list.'}, status=400)
 
         queryset = Contact.objects.filter(step_user=step_user)
         serializer = self.get_serializer(queryset, many=True)

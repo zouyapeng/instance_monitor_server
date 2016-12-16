@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
 import logging
 import datetime
 from pymongo import MongoClient

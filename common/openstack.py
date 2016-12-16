@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 from keystoneauth1.identity import v2
 from keystoneauth1 import session
 from keystoneauth1.exceptions.http import Unauthorized, NotFound

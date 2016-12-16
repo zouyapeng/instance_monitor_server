@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 from trigger.models import Trigger, Event
 from rest_framework import serializers
 

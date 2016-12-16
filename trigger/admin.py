@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 from django.contrib import admin
 from trigger.models import Trigger, Event
 

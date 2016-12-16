@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 from django.shortcuts import render
 from heartbeat.models import MonitorAgent, InstanceUUID
 from trigger.models import Trigger

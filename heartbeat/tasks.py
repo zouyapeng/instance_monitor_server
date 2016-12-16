@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
 
 from celery.task import task
 from heartbeat.models import MonitorAgent

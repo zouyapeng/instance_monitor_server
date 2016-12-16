@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
 
 from trigger.models import Trigger, Event
 from trigger.serializers import TriggerSerializer, EventSerializer
@@ -16,7 +18,7 @@ class TriggerListView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         step_user = request.data.get('step_user', None)
         if step_user is None:
-            return Response(data={'messages': 'step_user is need for get trigger list.'}, status=400)
+            return Response(data={'detail': 'step_user is need for get trigger list.'}, status=400)
 
         queryset = Trigger.objects.filter(step_user=step_user)
         serializer = self.get_serializer(queryset, many=True)
@@ -24,7 +26,7 @@ class TriggerListView(generics.CreateAPIView):
         return Response(serializer.data)
 
 
-class TriggerCreateView(generics.ListCreateAPIView):
+class TriggerCreateView(generics.CreateAPIView):
     queryset = Trigger.objects.all()
     serializer_class = TriggerSerializer
 
@@ -64,7 +66,6 @@ class EventListView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         events = []
         uuids = request.data.get('uuids', None)
-        # uuids = ['0d5b82ba-f20b-49b3-beeb-14cd76612692']
         for uuid in uuids:
             triggers = Trigger.objects.filter(instance_uuid=uuid)
             for trigger in triggers:
