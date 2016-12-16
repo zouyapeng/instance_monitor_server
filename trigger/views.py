@@ -71,4 +71,4 @@ class EventListView(generics.CreateAPIView):
             for trigger in triggers:
                 events.extend(trigger.get_events())
 
-        return Response({'events': events})
+        return Response(events)
