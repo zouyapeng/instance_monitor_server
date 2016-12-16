@@ -46,6 +46,7 @@ class Trigger(models.Model):
 
     def format_dict(self):
         return {'id': self.id,
+                'step_user': self.step_user,
                 'name': self.name,
                 'instance_uuid': self.instance_uuid,
                 'item': self.item,

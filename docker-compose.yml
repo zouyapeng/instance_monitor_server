@@ -10,7 +10,7 @@ vmserver-db:
     - MYSQL_DATABASE=vmserver
     - MYSQL_USER=vmserver
     - MYSQL_PASSWORD=vmserver
-  command: [mysqld, --character-set-server=utf8 --collation-server=utf8_general_ci]
+  command: [mysqld, --character-set-server=utf8, --collation-server=utf8_general_ci]
 
 vmserver-mongodb:
   image: tutum/mongodb:3.2
